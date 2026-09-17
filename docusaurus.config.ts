@@ -2,6 +2,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import fs from 'fs';
+import gtmNoscriptPlugin from './plugins/gtm-noscript';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 const versions: string[] = JSON.parse(fs.readFileSync('./versions.json', 'utf-8'));
@@ -69,6 +70,48 @@ const config: Config = {
     latestVersion,
   },
 
+  // CookiePro must load before GTM so it can categorize/block tracking
+  // scripts pending consent;
+  headTags: [
+    {
+      tagName: 'script',
+      attributes: {
+        src: 'https://cookie-cdn.cookiepro.com/scripttemplates/otSDKStub.js',
+        type: 'text/javascript',
+        charset: 'UTF-8',
+        'data-domain-script': '486163bc-a8c5-40d8-b185-c707cc718a23',
+      },
+    },
+    {
+      tagName: 'script',
+      attributes: {
+        type: 'text/javascript',
+      },
+      innerHTML: 'function OptanonWrapper() { }',
+    },
+    {
+      tagName: 'script',
+      attributes: {},
+      innerHTML: `
+        (function(w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({
+            'gtm.start': new Date().getTime(),
+            event: 'gtm.js'
+          });
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != 'dataLayer' ? '&l=' + l : '';
+          j.setAttributeNode(d.createAttribute('data-ot-ignore'));
+          j.async = true;
+          j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-PSTXMT');
+      `,
+    },
+  ],
+
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
@@ -114,6 +157,7 @@ const config: Config = {
         },
       },
     ],
+    gtmNoscriptPlugin,
   ],
 
   presets: [
