@@ -1,12 +1,6 @@
 {
   "docsSidebar": [
     {
-      "type": "doc",
-      "id": "index",
-      "label": "Home",
-      "className": "sidebar-doc-home"
-    },
-    {
       "type": "category",
       "label": "Get Started",
       "collapsed": false,

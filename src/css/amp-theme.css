@@ -233,16 +233,10 @@ html[data-theme='dark'] [class*='docMainContainer'] {
   --doc-sidebar-width: 360px;
 }
 
-/* Constrain prose for readability; let rich content break the measure. */
 .theme-doc-markdown.markdown {
   max-width: 820px;
   overflow: visible;
   position: relative;
-}
-
-.theme-doc-markdown.markdown p,
-.theme-doc-markdown.markdown li {
-  max-width: 720px;
 }
 
 /*
@@ -292,10 +286,17 @@ html[data-theme='dark'] [class*='docMainContainer'] {
   max-width: 100%;
 }
 
-/* Balance the main content column. */
+
 [class*='docItemCol'] {
   padding-left: 3rem;
   padding-right: 1rem;
+}
+
+
+@media (min-width: 997px) {
+  [class*='docItemCol'][class*='docItemCol'] {
+    max-width: min(75%, calc(820px + 3rem + 1rem)) !important;
+  }
 }
 
 @media (min-width: 997px) {
@@ -317,12 +318,24 @@ html[data-theme='dark'] [class*='docMainContainer'] {
 }
 
 /*
- * The reference design uses 5rem of right padding here. Agent Manager has much longer
- * sidebar labels ("Agent Identity and Access Management"), so 2rem is used
- * instead to keep them from wrapping three deep inside a 360px rail.
+ * The left padding aligns the sidebar with the rest of the page chrome. The
+ * navbar sets 40px of its own, so its brand mark starts there; at 0 the rail
+ * sat 40px to the left of everything above it and read as though it had
+ * fallen off the edge of the page. 1.75rem here plus the 0.75rem each
+ * `.menu__link` carries puts a section label's icon at exactly 40px, under
+ * the brand.
+ *
+ * The reference design uses 5rem of right padding. Agent Manager has much
+ * longer sidebar labels, so 2rem is used instead to keep them from wrapping
+ * three deep. 360 - 28 - 32 leaves 300px of usable width, and two labels want
+ * more than that once their indent, caret and padding are counted: "Agent
+ * Identity and Access Management" and "Run Agent Manager on a VM with
+ * Docker". Both wrap to two lines by design; the rail was briefly 400px to
+ * keep them on one, which cost the content column 40px on every page. Widen
+ * to 380px if single-line labels matter more than the narrower rail.
  */
 .theme-doc-sidebar-container .menu {
-  padding: 0.5rem 2rem 1rem 0;
+  padding: 0.5rem 2rem 1rem 1.75rem;
 }
 
 .theme-doc-sidebar-container .menu > .menu__list {
@@ -436,8 +449,23 @@ aside.theme-doc-sidebar-container {
 
 /* ---- Nesting indentation ---- */
 
+/*
+ * Indent each level under its parent. At 0 the first nested level sat flush
+ * with the section header above it, so a category's children read as more
+ * section headers rather than as its contents -- most visible under Guides,
+ * where all five children are themselves collapsible.
+ *
+ * The value is the section header's icon box -- its 17px width plus the
+ * 0.5rem flex gap -- so a child's label starts exactly under its parent's
+ * label rather than under the parent's icon. The two rules compound, putting
+ * level 3 a further 0.75rem in.
+ *
+ * Don't raise it much further. The 360px rail leaves 300px once the menu's
+ * own padding is taken out, and the longest labels already use all of it
+ * across two lines; more indent here starts a third.
+ */
 .theme-doc-sidebar-container .theme-doc-sidebar-item-category > .menu__list {
-  padding-left: 0;
+  padding-left: calc(17px + 0.5rem);
 }
 
 .theme-doc-sidebar-container .theme-doc-sidebar-item-category > .menu__list .menu__list {
@@ -447,9 +475,15 @@ aside.theme-doc-sidebar-container {
 /* ======================= 7b. Sidebar section headers ==================== */
 
 /*
- * Style each TOP-LEVEL sidebar entry as an uppercase section header with a
- * masked icon. The `> .menu__list >` direct-child chain keeps nested
- * categories (Guides > Installation, References > CLI) out of this.
+ * Style each TOP-LEVEL sidebar entry as a section header with a masked icon.
+ * The `> .menu__list >` direct-child chain keeps nested categories
+ * (Guides > Installation, References > CLI) out of this.
+ *
+ * The label keeps the sidebar's own font and reads in the case it is written
+ * in; weight, size and the icon carry the hierarchy on their own. It was set
+ * in caps with 0.08em of tracking, which at this weight read as shouted rather
+ * than structural. Tracking went with the caps: it exists to keep uppercase
+ * legible and only loosens normal-case text.
  *
  * Two selector groups because Contributing is a type:'doc' entry with no
  * .menu__list-item-collapsible wrapper, unlike the five categories.
@@ -484,11 +518,9 @@ aside.theme-doc-sidebar-container {
   color: var(--ifm-font-color-base);
   display: flex;
   font-size: 0.95rem;
-  font-weight: 800;
+  font-weight: 700;
   gap: 0.5rem;
-  letter-spacing: 0.08em;
   padding: 0.35rem 0.75rem 0.6rem;
-  text-transform: uppercase;
 }
 
 [data-theme='dark']
@@ -609,6 +641,7 @@ aside.theme-doc-sidebar-container {
 }
 
 /* ---- Per-section icons ---- */
+
 
 .sidebar-section-icon-get-started {
   --sidebar-section-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z'/%3E%3Cpath d='M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z'/%3E%3C/svg%3E");
@@ -937,31 +970,14 @@ div[class*='col--3'] {
   background-image: none;
 }
 
-/* ======================= 9b. Docs landing page =========================== */
-
-/*
- * The landing lives at each version's root as a doc (docs/index.mdx, slug "/"),
- * which is what gives it the sidebar. Two bits of doc chrome are redundant
- * there: the breadcrumb reads "Home > Home", and the page has no headings worth
- * a table of contents. The component supplies its own hero, so the doc title is
- * hidden via front matter rather than here.
- */
-.docs-doc-id-index .theme-doc-breadcrumbs {
-  display: none;
-}
-
-/* The landing is a full-width layout, not prose — release the 820px measure. */
-.docs-doc-id-index .theme-doc-markdown.markdown {
-  max-width: none;
-}
-
 /* =========================== 10. Responsive ============================= */
 
 /*
  * The wide container and 3rem content padding from section 6 (Layout) and the
  * 2.5rem navbar padding from section 8 are desktop-only choices tuned for the
  * 360px sidebar rail; both are unwound below 997px, the breakpoint at which
- * Infima swaps the fixed sidebar for the mobile drawer.
+ * Infima swaps the fixed sidebar for the mobile drawer. Without the unwind the
+ * content sits 48px from the left edge and 16px from the right on a phone.
  */
 @media (max-width: 996px) {
   [class*='docItemCol'] {
