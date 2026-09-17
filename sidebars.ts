@@ -14,15 +14,6 @@ import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
  */
 const sidebars: SidebarsConfig = {
   docsSidebar: [
-    // The docs landing page. A doc only gets a sidebar if it belongs to one,
-    // so this entry is what makes /docs/<version>/ render with the sidebar
-    // rather than as a bare page.
-    {
-      type: 'doc',
-      id: 'index',
-      label: 'Home',
-      className: 'sidebar-doc-home',
-    },
     {
       type: 'category',
       label: 'Get Started',

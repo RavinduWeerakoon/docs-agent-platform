@@ -96,10 +96,16 @@ const config: Config = {
       {
         // Send the /docs/latest/ form of each pre-reorganisation URL to the
         // canonical page in one hop; the alias follows whatever is current.
-        redirects: reorganizedPaths.map(([from, to]) => ({
-          from: `/docs/latest/${from}`,
-          to: `/docs/${latestVersion}/${to}`,
-        })),
+        redirects: [
+          ...reorganizedPaths.map(([from, to]) => ({
+            from: `/docs/latest/${from}`,
+            to: `/docs/${latestVersion}/${to}`,
+          })),
+          ...['next', 'cloud', latestVersion, 'latest'].map((alias) => ({
+            from: `/docs/${alias}`,
+            to: `/docs/${alias === 'latest' ? latestVersion : alias}/get-started/what-is-amp`,
+          })),
+        ],
         createRedirects(existingPath: string) {
           if (existingPath.includes(`/docs/${latestVersion}/`)) {
             return [existingPath.replace(`/docs/${latestVersion}/`, '/docs/latest/')];
