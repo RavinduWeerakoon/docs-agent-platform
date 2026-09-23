@@ -24,7 +24,7 @@ function HomepageHeader() {
           <div className={styles.buttons}>
             <Link
               className="button button--secondary button--lg"
-              to={`/docs/${versions.latestVersion}/get-started/what-is-amp`}>
+              to={`/${versions.latestVersion}/get-started/what-is-amp`}>
               Get Started →
             </Link>
             <Link
@@ -207,12 +207,12 @@ function QuickStartSection() {
             <div className="text--center margin-top--lg">
               <Link
                 className="button button--primary button--lg"
-                to={`/docs/${versions.latestVersion}/get-started/quick-start`}>
+                to={`/${versions.latestVersion}/get-started/quick-start`}>
                 View Full Quick Start Guide →
               </Link>
               <Link
                 className="button button--secondary button--lg margin-left--md"
-                to={`/docs/${versions.latestVersion}/guides/on-k3d/`}>
+                to={`/${versions.latestVersion}/guides/on-k3d/`}>
                 On local K3D cluster →
               </Link>
             </div>
