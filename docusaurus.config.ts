@@ -51,10 +51,10 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://wso2.github.io',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/docs-agent-platform/',
+  url: 'https://wso2.com',
+  // Set the /<baseUrl>/ pathname under which the site is served.
+  // through to this GitHub Pages site.
+  baseUrl: '/agent-platform/docs/',
 
   // Set true for GitHub pages deployment.
   trailingSlash: true,
@@ -137,21 +137,21 @@ const config: Config = {
     [
       '@docusaurus/plugin-client-redirects',
       {
-        // Send the /docs/latest/ form of each pre-reorganisation URL to the
+        // Send the /latest/ form of each pre-reorganisation URL to the
         // canonical page in one hop; the alias follows whatever is current.
         redirects: [
           ...reorganizedPaths.map(([from, to]) => ({
-            from: `/docs/latest/${from}`,
-            to: `/docs/${latestVersion}/${to}`,
+            from: `/latest/${from}`,
+            to: `/${latestVersion}/${to}`,
           })),
           ...['next', 'cloud', latestVersion, 'latest'].map((alias) => ({
-            from: `/docs/${alias}`,
-            to: `/docs/${alias === 'latest' ? latestVersion : alias}/get-started/what-is-amp`,
+            from: `/${alias}`,
+            to: `/${alias === 'latest' ? latestVersion : alias}/get-started/what-is-amp`,
           })),
         ],
         createRedirects(existingPath: string) {
-          if (existingPath.includes(`/docs/${latestVersion}/`)) {
-            return [existingPath.replace(`/docs/${latestVersion}/`, '/docs/latest/')];
+          if (existingPath.includes(`/${latestVersion}/`)) {
+            return [existingPath.replace(`/${latestVersion}/`, '/latest/')];
           }
           return undefined;
         },
@@ -165,6 +165,9 @@ const config: Config = {
       'classic',
       {
         docs: {
+          // baseUrl already ends in /docs/ (see above), so mount the docs
+          // plugin at that root instead of nesting another docs/ segment.
+          routeBasePath: '/',
           lastVersion: latestVersion,
           versions: {
             current: {
@@ -266,11 +269,11 @@ const config: Config = {
           items: [
             {
               label: 'Overview',
-              to: `/docs/${latestVersion}/get-started/what-is-amp`,
+              to: `/${latestVersion}/get-started/what-is-amp`,
             },
             {
               label: 'Quick Start',
-              to: `/docs/${latestVersion}/get-started/quick-start`,
+              to: `/${latestVersion}/get-started/quick-start`,
             },
           ],
         },
