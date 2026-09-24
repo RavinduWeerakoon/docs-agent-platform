@@ -294,6 +294,7 @@ These are covered by the [instrumentation matrix test suite](https://github.com/
 | CrewAI | 1.1.0 | LLM, Agent, Task | No tool spans are emitted; 1.14.5 fails to install on instrumentation 0.3.0 (see below) |
 | OpenAI (direct SDK) | 2.38.0 | LLM | — |
 | Anthropic (direct SDK) | 0.45.0 | LLM | — |
+| Strands Agents (OpenAI) | 1.55.1 | Agent, Chain, LLM, Tool | Tested with `openai==2.38.0`; emission only (gateway and Observer delivery not covered) |
 
 :::warning CrewAI 1.14.5 does not install on AMP instrumentation 0.3.0
 `crewai 1.14.5` requires `opentelemetry-api >=1.34,<1.35`, while the `traceloop-sdk 0.61.0` that AMP instrumentation 0.3.0 pins requires `>=1.38,<2`. Installing both fails with `ResolutionImpossible` at install time rather than degrading at runtime.
