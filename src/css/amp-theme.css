@@ -777,8 +777,9 @@ div[class*='tableOfContents'] {
  * `col col--3`. Pull it inward so it does not crowd the content column.
  */
 div[class*='col--3'] {
+  margin-left: auto;
   padding-left: 0;
-  padding-right: 4rem;
+  padding-right: 2rem;
 }
 
 /* ================== 9. Code blocks, inline code, admonitions ============ */

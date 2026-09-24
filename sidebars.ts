@@ -134,11 +134,10 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'tutorials/create-your-first-agent',
-        {
-          type: 'doc',
-          id: 'tutorials/observe-first-agent',
-          label: 'Monitoring an Agent',
-        },
+        'tutorials/govern-the-model',
+        'tutorials/give-the-agent-real-tools',
+        'tutorials/observe-first-agent',
+        'tutorials/promote-your-agent',
         {
           type: 'doc',
           id: 'tutorials/build-a-ballerina-agent',
@@ -186,6 +185,7 @@ const sidebars: SidebarsConfig = {
             'reference/helm-charts/wso2-amp-platform-resources-extension',
           ],
         },
+        'reference/sample-agents',
         'reference/mcp-server',
         'reference/observer-mcp-server',
         'reference/authorization',
